@@ -45,8 +45,15 @@ import java.util.*;
             Queue<String> output = new LinkedList<>();
             List<String> arr = tokenize(infix);
             for(int i = 0; i<arr.size();i++){
+                System.out.println("Break");
                 String temp = arr.get(i);
                 System.out.println("temp is : " + temp);
+
+            if(isNumber(temp) == true){
+                System.out.println(temp + " is a number");
+                output.add(temp);
+            }
+
                 if(isOperator(temp.charAt(0)) == true) {
                     System.out.println("Verified that " + temp + " is an operator");
                     int prec = getPrecedence(temp);
@@ -109,17 +116,23 @@ import java.util.*;
                 }
             }
 
+
             while(operations.isEmpty() == false){
                 output.add(operations.pop());
             }
 
             String outputString = "";
-            for(int i = 0; i< output.size(); i++){
 
-                outputString += output.peek();
-                output.remove();
-
+            while(!output.isEmpty()) {
+                outputString += output.remove();
             }
+//
+//            for(int i = 0; i< output.size(); i++){
+//                outputString += output.peek();
+//                output.remove();
+//
+//            }
+
             return outputString;
         }
 
@@ -195,7 +208,6 @@ import java.util.*;
             int negCount = 0;
 
             for(int i = 0; i < token.length(); i++){
-                if (arrNum.contains(token.charAt(i))) return true;
 
                 if (token.charAt(i) == '-'){
                     if(negCount == 0) negCount++;
@@ -205,9 +217,19 @@ import java.util.*;
                     if(deCount == 0) deCount++;
                     else return false;
                 }
-                else return false;
-            }
-            return false;
+
+
+
+
+                if (arrNum.contains(String.valueOf(token.charAt(i)))){
+                        return true;
+
+                    }
+                    else
+                        return false;
+                }
+
+            return true;
         }
 
 
