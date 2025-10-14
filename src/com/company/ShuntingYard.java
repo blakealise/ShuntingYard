@@ -3,8 +3,10 @@ package com.company;
 
 import java.util.*;
 
+import static java.lang.Double.parseDouble;
 
-    /**
+
+/**
      * Implementation of Dijkstra's Shunting Yard Algorithm
      * Converts infix expressions to postfix (Reverse Polish Notation)
      *
@@ -44,18 +46,23 @@ import java.util.*;
             Stack<String> operations = new Stack();
             Queue<String> output = new LinkedList<>();
             List<String> arr = tokenize(infix);
+
+
+            //could check here for valid expressions
+
+
             for(int i = 0; i<arr.size();i++){
-                System.out.println("Break");
+               // System.out.println("Break");
                 String temp = arr.get(i);
-                System.out.println("temp is : " + temp);
+              //  System.out.println("temp is : " + temp);
 
             if(isNumber(temp) == true){
-                System.out.println(temp + " is a number");
+             //   System.out.println(temp + " is a number");
                 output.add(temp);
             }
 
                 if(isOperator(temp.charAt(0)) == true) {
-                    System.out.println("Verified that " + temp + " is an operator");
+                   // System.out.println("Verified that " + temp + " is an operator");
                     int prec = getPrecedence(temp);
                     if (prec == 1) {
                         if (operations.isEmpty() == true) {
@@ -81,15 +88,15 @@ import java.util.*;
                         else operations.add(temp);
                     }
                     if (prec == 4) {
-                        System.out.println(temp + " has a precedence of 4");
-                        System.out.println("The stack currently has a size of : " + operations.size());
+                     //   System.out.println(temp + " has a precedence of 4");
+                     //   System.out.println("The stack currently has a size of : " + operations.size());
                         if (operations.isEmpty() == true) {
                             operations.add(arr.get(i));
                         }
                         else{
                             String opTemp = operations.peek();
                             if (getPrecedence(opTemp) <= 4) {
-                                System.out.println("I'm popping from stack");
+                               // System.out.println("I'm popping from stack");
 //                                output.add(temp);
                                 output.add(operations.pop());
                             }
@@ -104,10 +111,10 @@ import java.util.*;
                         } else {
                             String opTemp = operations.peek();
                             if (getPrecedence(opTemp) >= 5) {
-                                System.out.println("adding to queue");
+                                //System.out.println("adding to queue");
                                 output.add(operations.pop());
                             }
-                            System.out.println("adding + to stack");
+                           // System.out.println("adding + to stack");
                             operations.add(arr.get(i));
                         }
                     } else if (isNumber(temp)) {
@@ -246,17 +253,33 @@ import java.util.*;
          * 3. Push the result back
          */
         public double evaluatePostfix(String postfix) {
-            // TODO: Implement postfix evaluation
-            // Algorithm:
-            // - For each token:
-            //   - If number: push to stack
-            //   - If operator: pop two values, compute, push result
-            // - Final stack value is the answer
+            ArrayList<String> arr = new ArrayList<>(tokenize(postfix));
+            Stack<String> stack = new Stack<>();
+            double result = 0.0;
 
+            for (String cur : arr) {
+                if (isOperator(cur.charAt(0))) {
+                    String pop1 = stack.pop();
+                    String pop2 = stack.pop();
+                    double popTwo = Double.parseDouble(pop1);
+                    double popOne = Double.parseDouble(pop2);
+                    result = switch (cur) {
+                        case "+" -> popOne + popTwo;
+                        case "-" -> popOne - popTwo;
+                        case "*" -> popOne * popTwo;
+                        case "/" -> popOne / popTwo;
+                        case "^" -> Math.pow(popOne, popTwo);
+                        default -> result;
+                    };
 
-            return 0.0;
+                    stack.add(result + "");
+
+                } else {
+                    stack.add(cur);
+                }
+            }
+            return result;
         }
-
 
         /**
          * Tokenizes an expression string into individual tokens
