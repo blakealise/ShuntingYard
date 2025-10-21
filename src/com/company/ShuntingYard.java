@@ -1,26 +1,13 @@
 package com.company;
-
-
 import java.util.*;
 
 import static java.lang.Double.parseDouble;
 
 
-/**
-     * Implementation of Dijkstra's Shunting Yard Algorithm
-     * Converts infix expressions to postfix (Reverse Polish Notation)
-     *
-     * Example: "3 + 4 * 2" becomes "3 4 2 * +"
-     *
-     * Algorithm Overview:
-     * 1. Read tokens from left to right
-     * 2. If operand (number), add to output
-     * 3. If operator, pop operators from stack based on precedence rules
-     * 4. If '(', push to stack
-     * 5. If ')', pop until matching '(' is found
-     * 6. At end, pop remaining operators to output
-     */
     public class ShuntingYard {
+        public String infixToPostFix(){
+            throw new EmptyError();
+        }
 
         String[] numbers = {"0","1","2","3","4","5","6","7","8","9"};
         List<String> arrNum = Arrays.asList(numbers);
@@ -43,6 +30,9 @@ import static java.lang.Double.parseDouble;
             // - An output queue or list for the result
             // - Logic to tokenize the input string
             // - Logic to handle operator precedence
+            if(infix.isEmpty()){
+                throw new EmptyError();
+            }
             Stack<String> operations = new Stack();
             Queue<String> output = new LinkedList<>();
             List<String> arr = tokenize(infix);
